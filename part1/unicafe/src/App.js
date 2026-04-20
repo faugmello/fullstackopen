@@ -4,7 +4,33 @@ const Header = ({ label }) => <h2>{label}</h2>
 
 const FeedbackButton = ({ label, handleClick}) => <button onClick={handleClick}>{label}</button>
 
-const FeedbackStatistics = ({good, neutral, bad}) => <p>good {good}<br/>neutral {neutral}<br/>bad: {bad}</p>
+const FeedbackStatistics = ({good, neutral, bad}) => {
+    const sum = good + neutral + bad
+    let average = 0
+    if (sum === 0) {
+        average = 0
+    } else {
+        average = (good - bad) / sum
+    }
+
+    let positive = 0
+    if (sum === 0) {
+        positive = 0
+    } else {
+        positive = good / sum * 100
+    }
+
+    return (
+        <p>
+            good {good}<br/>
+            neutral {neutral}<br/>
+            bad: {bad}<br />
+            all: {sum}<br />
+            average: {average}<br/>
+            positive: {positive}%<br />
+        </p>
+    )
+}
 
 const App = () => {
   const [good, setGood] = useState(0)
