@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 const Header = ({ label }) => <h2>{label}</h2>
 
-const FeedbackButton = ({ label, handleClick}) => <button onClick={handleClick}>{label}</button>
+const Button = ({ label, handleClick}) => <button onClick={handleClick}>{label}</button>
 
-const FeedbackStatistics = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
     const sum = good + neutral + bad
     let average = 0
     if (sum === 0) {
@@ -21,20 +21,22 @@ const FeedbackStatistics = ({good, neutral, bad}) => {
     }
 
     if (good === 0 && neutral === 0 && bad === 0) {
-	return <p>No feedback given</p>
+	return <div>No feedback given</div>
     } else {
     return (
-	<p>
-	    good {good}<br/>
-	    neutral {neutral}<br/>
-	    bad: {bad}<br />
-	    all: {sum}<br />
-	    average: {average}<br/>
-	    positive: {positive}%<br />
-	</p>
+	<div>
+	    <StatisticLine label="good" value={good} />
+	    <StatisticLine label="neutral" value={neutral} />
+	    <StatisticLine label="bad" value={bad} />
+	    <p>all: {sum}</p>
+	    <p>average: {average}</p>
+	    <p>positive: {positive}%</p>
+	</div>
     )
     }
 }
+
+const StatisticLine = ({label, value}) => <p>{label}: {value}</p>
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -60,11 +62,11 @@ const App = () => {
   return (
     <div>
       <Header label='give feedback'/>
-      <FeedbackButton label={goodLabel} handleClick={() => handleClick(goodLabel)} />
-      <FeedbackButton label={neutralLabel} handleClick={() => handleClick(neutralLabel)} />
-      <FeedbackButton label={badLabel} handleClick={() => handleClick(badLabel)} />
+      <Button label={goodLabel} handleClick={() => handleClick(goodLabel)} />
+      <Button label={neutralLabel} handleClick={() => handleClick(neutralLabel)} />
+      <Button label={badLabel} handleClick={() => handleClick(badLabel)} />
       <Header label='statistics'/>
-      <FeedbackStatistics good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
