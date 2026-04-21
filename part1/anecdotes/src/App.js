@@ -13,24 +13,31 @@ const App = () => {
     ]
 
     const [selected, setSelected] = useState(0)
-    const [votes, setVotes] = useState(
-	{ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
-    )
+    const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+    const [mostVoted, setMostVoted] = useState(-1)
 
     const handleNextAnecdoteClick = () => setSelected(Math.floor(Math.random() * anecdotes.length)
 
     const handleVoteClick = () => {
-	const updatedVotes = {...votes}
+	const updatedVotes = [...votes]
 	updatedVotes[selected] += 1
 	setVotes(updatedVotes)
+	
+	const selectedVotes = updatedVotes[selected]
+	
+	if (mostVoted === -1 || selectedVotes > updatedVotes[mostVoted]) {
+	    setMostVoted(selected)
     }
 
   return (
     <div>
+	<Header text='Anecdote of the day' />
         <Anecdote anecdote={anecdotes[selected]} />
 	<Votes votes={votes[selected]} />
 	<Button label='vote' handleClick={handleVoteClick} />
 	<Button label='next anecdote' handleClick={handleNextAnecdoteClick} />
+	<Header text='Anecdote with most votes' />
+	<Anecdote anecdote={anecdotes[mostVoted]} />
     </div>
   )
 }
@@ -53,6 +60,8 @@ const Votes = ({votes}) => {
 	<p>{votesMessage}</p>
     )
 }
+
+const Header = ({text}) => <h2>{text}</h2>
 
 export default App
 
