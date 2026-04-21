@@ -20,16 +20,20 @@ const FeedbackStatistics = ({good, neutral, bad}) => {
         positive = good / sum * 100
     }
 
+    if (good === 0 && neutral === 0 && bad === 0) {
+	return <p>No feedback given</p>
+    } else {
     return (
-        <p>
-            good {good}<br/>
-            neutral {neutral}<br/>
-            bad: {bad}<br />
-            all: {sum}<br />
-            average: {average}<br/>
-            positive: {positive}%<br />
-        </p>
+	<p>
+	    good {good}<br/>
+	    neutral {neutral}<br/>
+	    bad: {bad}<br />
+	    all: {sum}<br />
+	    average: {average}<br/>
+	    positive: {positive}%<br />
+	</p>
     )
+    }
 }
 
 const App = () => {
