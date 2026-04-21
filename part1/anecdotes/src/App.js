@@ -13,19 +13,46 @@ const App = () => {
     ]
 
     const [selected, setSelected] = useState(0)
+    const [votes, setVotes] = useState(
+	{ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
+    )
 
-    const handleClick = () => setSelected(Math.floor(Math.random() * anecdotes.length)
+    const handleNextAnecdoteClick = () => setSelected(Math.floor(Math.random() * anecdotes.length)
+
+    const handleVoteClick = () => {
+	const updatedVotes = {...votes}
+	updatedVotes[selected] += 1
+	setVotes(updatedVotes)
+    }
 
   return (
     <div>
         <Anecdote anecdote={anecdotes[selected]} />
-	<Button label='next anecdote' handleClick={handleClick} />
+	<Votes votes={votes[selected]} />
+	<Button label='vote' handleClick={handleVoteClick} />
+	<Button label='next anecdote' handleClick={handleNextAnecdoteClick} />
     </div>
   )
 }
 
 const Anecdote = ({anecdote}) => <p>{anecdote}</p>
 
-const Button = ({label, handleClick}) => <button onClick={handleClick}>{label}</button>
+const Button = ({label, handleNextAnecdoteClick}) => <button onClick={handleNextAnecdoteClick}>{label}</button>
+
+const Votes = ({votes}) => {
+    let votesMessage = 0
+    if (votes === undefined) {
+	votesMessage = "has 0 votes"
+    } else if (votesMessage === 1) {
+	votesMessage = `has ${votes} vote`
+    } else {
+	votesMessage = `has ${votes} votes`
+    }
+
+    return(
+	<p>{votesMessage}</p>
+    )
+}
 
 export default App
+
