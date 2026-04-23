@@ -12,9 +12,13 @@ const App = () => {
 
     const submitNewName = (event) => {
         event.preventDefault()
-        const updatedPersons = [...persons]
-        updatedPersons.push({ name: newName })
-        setPersons(updatedPersons)
+        const newNameIsAlreadyOnThePhonebook = persons.some(person => person.name === newName)
+        if (newNameIsAlreadyOnThePhonebook) {
+            alert(`${newName} is already added to phonebook`)
+        } else {
+            setPersons([...persons, { name: newName }])
+        }
+        setNewName('')
     }
 
     return (
