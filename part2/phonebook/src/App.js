@@ -11,7 +11,7 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState(persons)
     const [newName, setNewName] = useState('')
     const [newNumber, setnewNumber] = useState('')
-    const [notification, setNotification] = useState(null)
+    const [notification, setNotification] = useState({message: '', type: ''})
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value
@@ -52,16 +52,32 @@ const App = () => {
                                 updatedFilteredPersons.push(updatedPerson)
                                 setFilteredPersons(updatedFilteredPersons)
                             }
-                            setNotification(`Updated ${updatedPerson.name}`)
+                            setNotification(
+                                {
+                                    message: `Updated ${updatedPerson.name}`,
+                                    type: 'success'
+                                }
+                            )
                             setTimeout(() => {
-                                setNotification(null)
+                                setNotification({message: '', type: ''})
+                            }, 5000)
+                        })
+                        .catch(() => {
+                            setNotification(
+                                {
+                                    message: `Error while trying to update ${newName}`,
+                                    type: 'error'
+                                }
+                            )
+                            setTimeout(() => {
+                                setNotification({message: '', type: ''})
                             }, 5000)
                         })
                 }
             }
             clearForm()
         } else {
-            const newPerson = { name: newName, number: newNumber }
+            const newPerson = {name: newName, number: newNumber}
             services.create(newPerson)
                 .then(newPerson => {
                     setPersons(persons.concat(newPerson))
@@ -69,9 +85,25 @@ const App = () => {
                         setFilteredPersons(filteredPersons.concat(newPerson))
                     }
                     clearForm()
-                    setNotification(`Added ${newPerson.name}`)
+                    setNotification(
+                        {
+                            message: `Added ${newPerson.name}`,
+                            type: 'success'
+                        }
+                    )
                     setTimeout(() => {
-                        setNotification(null)
+                        setNotification({message: '', type: ''})
+                    }, 5000)
+                })
+                .catch(() => {
+                    setNotification(
+                        {
+                            message: `Error while trying to add ${newName}`,
+                            type: 'error'
+                        }
+                    )
+                    setTimeout(() => {
+                        setNotification({message: '', type: ''})
                     }, 5000)
                 })
         }
@@ -89,9 +121,25 @@ const App = () => {
                 .then(id => {
                     setPersons(persons.filter(person => person.id !== id))
                     setFilteredPersons(filteredPersons.filter(person => person.id !== id))
-                    setNotification(`${person.name} was deleted`)
+                    setNotification(
+                        {
+                            message: `${person.name} was deleted`,
+                            type: 'success'
+                        }
+                    )
                     setTimeout(() => {
-                        setNotification(null)
+                        setNotification({message: '', type: ''})
+                    }, 5000)
+                })
+                .catch(() => {
+                    setNotification(
+                        {
+                            message: `Error while trying to delete ${newName}`,
+                            type: 'error'
+                        }
+                    )
+                    setTimeout(() => {
+                        setNotification({message: '', type: ''})
                     }, 5000)
                 })
         }
@@ -108,17 +156,17 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={notification} />
-            <Filter filter={filter} handleFilterChange={handleFilterChange} />
+            <Notification notification={notification}/>
+            <Filter filter={filter} handleFilterChange={handleFilterChange}/>
             <h3>add a new</h3>
             <PersonForm
                 newName={newName}
                 handleNewNameChange={handleNewNameChange}
                 newNumber={newNumber}
                 handleNewNumberChange={handleNewNumberChange}
-                submitNewPerson={submitNewPerson} />
+                submitNewPerson={submitNewPerson}/>
             <h3>Numbers</h3>
-            <Persons persons={filteredPersons} handleExclude={handleExclude} />
+            <Persons persons={filteredPersons} handleExclude={handleExclude}/>
         </div>
     )
 }
