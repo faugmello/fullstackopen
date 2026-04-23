@@ -1,5 +1,8 @@
 import {useState} from 'react'
 import {clear} from "@testing-library/user-event/dist/clear";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
     const [filter, setFilter] = useState('')
@@ -54,25 +57,16 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <form>
-                <div>
-                    filter shown with <input value={filter} onChange={handleFilterChange}/>
-                </div>
-            </form>
-            <h2>add a new</h2>
-            <form onSubmit={submitNewPerson}>
-                <div>
-                    name: <input value={newName} onChange={handleNewNameChange}/>
-                </div>
-                <div>
-                    number: <input value={newNumber} onChange={handleNewNumberChange}/>
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
-            <h2>Numbers</h2>
-            {filteredPersons.map(person => <p key={person.name}>{person.name} {person.number}</p>)}
+            <Filter filter={filter} handleFilterChange={handleFilterChange} />
+            <h3>add a new</h3>
+            <PersonForm
+                newName={newName}
+                handleNewNameChange={handleNewNameChange}
+                newNumber={newNumber}
+                handleNewNumberChange={handleNewNumberChange}
+                submitNewPerson={submitNewPerson} />
+            <h3>Numbers</h3>
+            <Persons persons={filteredPersons} />
         </div>
     )
 }
