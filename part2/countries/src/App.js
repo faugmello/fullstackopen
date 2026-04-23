@@ -26,6 +26,10 @@ const App = () => {
         setFilter(event.target.value)
     }
 
+    const onCountryClick = countryName => {
+        setFilter(countryName.toLowerCase())
+    }
+
     const content = () => {
         if (filteredCountries.length === 1) {
             console.log(filteredCountries[0])
@@ -34,7 +38,7 @@ const App = () => {
             )
         } else if (filteredCountries.length <= 10) {
             return (
-                <Countries countries={filteredCountries}/>
+                <Countries countries={filteredCountries} onClick={onCountryClick}/>
             )
         } else {
             return (
@@ -57,9 +61,9 @@ const Filter = ({value, onFilterChange}) => (
     </form>
 )
 
-const Countries = ({countries}) => (
+const Countries = ({countries, onClick}) => (
     <>
-        {countries.map(country => <p key={country.name.common}>{country.name.common}</p>)}
+        {countries.map(country => <p key={country.name.common}>{country.name.common} <button onClick={() => onClick(country.name.common)}>Show</button></p>)}
     </>
 )
 
