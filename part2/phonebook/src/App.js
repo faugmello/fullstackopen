@@ -3,6 +3,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import services from "./services";
+import Notification from "./components/Notification";
 
 const App = () => {
     const [filter, setFilter] = useState('')
@@ -10,6 +11,7 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState(persons)
     const [newName, setNewName] = useState('')
     const [newNumber, setnewNumber] = useState('')
+    const [notification, setNotification] = useState(null)
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value
@@ -50,6 +52,10 @@ const App = () => {
                                 updatedFilteredPersons.push(updatedPerson)
                                 setFilteredPersons(updatedFilteredPersons)
                             }
+                            setNotification(`Updated ${updatedPerson.name}`)
+                            setTimeout(() => {
+                                setNotification(null)
+                            }, 5000)
                         })
                 }
             }
@@ -63,6 +69,10 @@ const App = () => {
                         setFilteredPersons(filteredPersons.concat(newPerson))
                     }
                     clearForm()
+                    setNotification(`Added ${newPerson.name}`)
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
                 })
         }
     }
@@ -79,6 +89,10 @@ const App = () => {
                 .then(id => {
                     setPersons(persons.filter(person => person.id !== id))
                     setFilteredPersons(filteredPersons.filter(person => person.id !== id))
+                    setNotification(`${person.name} was deleted`)
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
                 })
         }
     }
@@ -94,6 +108,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={notification} />
             <Filter filter={filter} handleFilterChange={handleFilterChange} />
             <h3>add a new</h3>
             <PersonForm
