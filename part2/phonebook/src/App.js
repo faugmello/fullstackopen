@@ -41,7 +41,9 @@ const App = () => {
             services.create(newPerson)
                 .then(newPerson => {
                     setPersons(persons.concat(newPerson))
-                    setFilteredPersons(persons.concat(newPerson))
+                    if (newPerson.name.includes(filter)) {
+                        setFilteredPersons(filteredPersons.concat(newPerson))
+                    }
                     clearForm()
                 })
         }
@@ -50,6 +52,17 @@ const App = () => {
     const clearForm = () => {
         setNewName('')
         setnewNumber('')
+    }
+
+    const handleExclude = id => {
+        const person = persons.find(person => person.id === id)
+        if (window.confirm(`Delete ${person.name}?`)) {
+            services.exclude(id)
+                .then(id => {
+                    setPersons(persons.filter(person => person.id !== id))
+                    setFilteredPersons(filteredPersons.filter(person => person.id !== id))
+                })
+        }
     }
 
     useEffect(() => {
@@ -72,7 +85,7 @@ const App = () => {
                 handleNewNumberChange={handleNewNumberChange}
                 submitNewPerson={submitNewPerson} />
             <h3>Numbers</h3>
-            <Persons persons={filteredPersons} />
+            <Persons persons={filteredPersons} handleExclude={handleExclude} />
         </div>
     )
 }
