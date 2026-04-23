@@ -34,7 +34,25 @@ const App = () => {
         if (!isNameFilled || !isNumberFilled) {
             alert('Fill in both the name and the number!')
         } else if (newNameIsAlreadyOnThePhonebook) {
-            alert(`${newName} is already added to phonebook`)
+            if (newNumber === persons.find(person => person.name === newName).number) {
+                alert(`${newName} is already added to phonebook`)
+            } else {
+                if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+                    const updatedPerson = persons.find(person => person.name === newName)
+                    updatedPerson['number'] = newNumber
+                    services.update(updatedPerson)
+                        .then(updatedPerson => {
+                            const updatedPersons = persons.filter(person => person.id !== updatedPerson.id)
+                            updatedPersons.push(updatedPerson)
+                            setPersons(updatedPersons)
+                            if (updatedPerson.name.includes(filter)) {
+                                const updatedFilteredPersons = filteredPersons.filter(person => person.id !== updatedPerson.id)
+                                updatedFilteredPersons.push(updatedPerson)
+                                setFilteredPersons(updatedFilteredPersons)
+                            }
+                        })
+                }
+            }
             clearForm()
         } else {
             const newPerson = { name: newName, number: newNumber }
