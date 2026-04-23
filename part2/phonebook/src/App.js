@@ -32,15 +32,18 @@ const App = () => {
         const isNameFilled = typeof newName === 'string' && newName.trim().length > 0
         const isNumberFilled = typeof newNumber === 'string' && newNumber.trim().length > 0
         if (!isNameFilled || !isNumberFilled) {
-            alert('Fill in both the name and the pwnumberhone!')
+            alert('Fill in both the name and the number!')
         } else if (newNameIsAlreadyOnThePhonebook) {
             alert(`${newName} is already added to phonebook`)
             clearForm()
         } else {
-            const updatedPersons = [...persons, {name: newName, number: newNumber}]
-            setPersons(updatedPersons)
-            setFilteredPersons(updatedPersons)
-            clearForm()
+            const newPerson = { name: newName, number: newNumber }
+            axios.post('http://localhost:3001/persons', newPerson)
+                .then((response) => {
+                    setPersons(persons.concat(response.data))
+                    setFilteredPersons(persons.concat(response.data))
+                    clearForm()
+                })
         }
     }
 
