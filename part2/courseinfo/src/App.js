@@ -18,7 +18,7 @@ const Content = ({parts}) => (
 
 const Part = ({part}) => (<p>{part.name} {part.exercises}</p>)
 
-const Total = ({parts}) => (<p><b>total of {parts[0].exercises + parts[1].exercises + parts[2].exercises} exercises</b></p>)
+const Total = ({parts}) => (<p><b>total of {parts.reduce((acc, current) => acc + current.exercises, 0)} exercises</b></p>)
 
 const App = () => {
   const course = {
