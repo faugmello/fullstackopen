@@ -5,9 +5,10 @@ const App = () => {
     const [filter, setFilter] = useState('')
     const [countries, setCountries] = useState([])
     const [filteredCountries, setFilteredCountries] = useState([])
+    const [weather, setWeather] = useState({})
 
     useEffect(() => {
-        service.getCountry()
+        service.getCountries()
             .then(countries => {
                 const sortedCountries = countries.sort((a, b) => a.name.common.localeCompare(b.name.common))
                 setCountries(sortedCountries)
@@ -21,6 +22,16 @@ const App = () => {
         setFilteredCountries(matchingCountries)
     }, [filter])
 
+    useEffect(() => {
+        if(filteredCountries.length === 1) {
+            service.getWeatherForCapital(filteredCountries[0].capital)
+                .then(response =>setWeather(response))
+                .catch(error => console.log(error))
+        } else {
+            setWeather({})
+        }
+    }, [filteredCountries])
+
     const onFilterChange = event => {
         event.preventDefault()
         setFilter(event.target.value)
@@ -32,9 +43,8 @@ const App = () => {
 
     const content = () => {
         if (filteredCountries.length === 1) {
-            console.log(filteredCountries[0])
             return (
-                <SingleCountry country={filteredCountries[0]} />
+                <SingleCountry country={filteredCountries[0]} weather={weather} />
             )
         } else if (filteredCountries.length <= 10) {
             return (
@@ -67,7 +77,7 @@ const Countries = ({countries, onClick}) => (
     </>
 )
 
-const SingleCountry = ({country}) => {
+const SingleCountry = ({country, weather}) => {
     const languages = Object.values(country.languages)
 
     return (
@@ -82,6 +92,12 @@ const SingleCountry = ({country}) => {
                 {languages.map(lang => <li key={lang}>{lang}</li>)}
             </ul>
             <p style={{fontSize: 50}}>{country.flag}</p>
+            <h2>Weather in {country.capital}</h2>
+            <div>
+                <p>Temperature {weather.temperature} Celsius</p>
+                <img src={weather.iconUrl}  alt={weather.description}/>
+                <p>Wind {weather.windSpeed} m/s</p>
+            </div>
         </>
     )
 }
