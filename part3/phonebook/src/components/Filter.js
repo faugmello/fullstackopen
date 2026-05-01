@@ -1,4 +1,4 @@
-const Filter = ({filter, handleFilterChange}) => (
+const Filter = ({ filter, handleFilterChange }) => (
     <form>
         <div>
             filter shown with <input value={filter} onChange={handleFilterChange}/>

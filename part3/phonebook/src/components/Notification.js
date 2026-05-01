@@ -1,4 +1,4 @@
-const Notification = ({notification}) => {
+const Notification = ({ notification }) => {
     if (notification.type === 'success') {
         return (
             <div className='success'>

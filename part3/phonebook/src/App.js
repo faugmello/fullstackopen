@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import services from "./remoteServices";
+import services from "./localServices";
 import Notification from "./components/Notification";
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState(persons)
     const [newName, setNewName] = useState('')
     const [newNumber, setnewNumber] = useState('')
-    const [notification, setNotification] = useState({message: '', type: ''})
+    const [notification, setNotification] = useState({ message: '', type: '' })
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value
@@ -59,7 +59,7 @@ const App = () => {
                                 }
                             )
                             setTimeout(() => {
-                                setNotification({message: '', type: ''})
+                                setNotification({ message: '', type: '' })
                             }, 5000)
                         })
                         .catch(() => {
@@ -70,14 +70,14 @@ const App = () => {
                                 }
                             )
                             setTimeout(() => {
-                                setNotification({message: '', type: ''})
+                                setNotification({ message: '', type: '' })
                             }, 5000)
                         })
                 }
             }
             clearForm()
         } else {
-            const newPerson = {name: newName, number: newNumber}
+            const newPerson = { name: newName, number: newNumber }
             services.create(newPerson)
                 .then(newPerson => {
                     setPersons(persons.concat(newPerson))
@@ -92,7 +92,7 @@ const App = () => {
                         }
                     )
                     setTimeout(() => {
-                        setNotification({message: '', type: ''})
+                        setNotification({ message: '', type: '' })
                     }, 5000)
                 })
                 .catch(error => {
@@ -103,7 +103,7 @@ const App = () => {
                         }
                     )
                     setTimeout(() => {
-                        setNotification({message: '', type: ''})
+                        setNotification({ message: '', type: '' })
                     }, 5000)
                 })
         }
@@ -128,7 +128,7 @@ const App = () => {
                         }
                     )
                     setTimeout(() => {
-                        setNotification({message: '', type: ''})
+                        setNotification({ message: '', type: '' })
                     }, 5000)
                 })
                 .catch(() => {
@@ -139,7 +139,7 @@ const App = () => {
                         }
                     )
                     setTimeout(() => {
-                        setNotification({message: '', type: ''})
+                        setNotification({ message: '', type: '' })
                     }, 5000)
                 })
         }
