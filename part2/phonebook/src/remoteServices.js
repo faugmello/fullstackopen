@@ -7,7 +7,7 @@ const create = newPerson => axios.post(baseUrl, newPerson).then(response => resp
 
 const exclude = id => axios.delete(`${baseUrl}/${id}`).then(response => response.data.id)
 
-const update = (updatedPerson) => axios.put(`${baseUrl}api/persons/${updatedPerson.id}`, updatedPerson)
+const update = (updatedPerson) => axios.put(`${baseUrl}/${updatedPerson.id}`, updatedPerson)
     .then(response => response.data)
 
 export default { getAll, create, exclude, update }
