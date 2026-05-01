@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import services from "./localServices";
+import services from "./services";
 import Notification from "./components/Notification";
 
 const App = () => {
@@ -95,10 +95,10 @@ const App = () => {
                         setNotification({message: '', type: ''})
                     }, 5000)
                 })
-                .catch(error => {
+                .catch(() => {
                     setNotification(
                         {
-                            message: error.response.data.error,
+                            message: `Error while trying to add ${newName}`,
                             type: 'error'
                         }
                     )
